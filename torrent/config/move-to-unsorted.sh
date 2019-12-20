@@ -5,5 +5,5 @@ set -Eeuxo pipefail
 # syntax. Luckily Bash is always here to help.
 
 if [[ "$1" == music ]]; then
-    cp -ruv "$2/$3" /music/.unsorted &
+    cp -ruv "$2/$3" /music/.unsorted
 fi

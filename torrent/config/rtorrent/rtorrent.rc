@@ -112,5 +112,5 @@ method.insert  = d.move_to_completed, simple, "d.directory.set=(argument.1); \
     execute.throw=mkdir, -pv, (argument.1); \
     execute.throw=mv, -uv, (argument.0), (argument.1); \
     d.save_full_session=; \
-    execute.throw=/config/move-to-unsorted.sh, (d.custom1), (d.get_completed_dir), (d.base_filename)"
+    execute.throw.bg=/config/move-to-unsorted.sh, (d.custom1), (d.get_completed_dir), (d.base_filename)"
 method.set_key = event.download.finished, move_complete, "d.move_to_completed=(d.data_path), (d.get_completed_dir)"
