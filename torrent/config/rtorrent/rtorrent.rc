@@ -17,8 +17,8 @@ method.insert = cfg.completed, private|const|string, (cat, (cfg.data), /complete
 method.insert = cfg.incoming,  private|const|string, (cat, (cfg.data), /incoming)
 method.insert = cfg.watched,   private|const|string, (cat, (cfg.data), /watched)
 
-method.insert = label.apps,    private|const|string, apps
-method.insert = label.books,   private|const|string, books
+method.insert = label.app,     private|const|string, app
+method.insert = label.book,    private|const|string, book
 method.insert = label.game,    private|const|string, game
 method.insert = label.movie,   private|const|string, movie
 method.insert = label.music,   private|const|string, music
@@ -75,26 +75,26 @@ schedule2               = socket_chgrp, 0, 0, (cat, "execute=chgrp,abc,", (cfg.s
 # downloaded automatically without requiring me to access the UI.
 #
 # https://github.com/rakshasa/rtorrent/wiki/TORRENT-Watch-directories#inotify
-method.insert = watched.apps,   private|const|string, (cat, (cfg.watched), /, (label.apps))
-method.insert = watched.books,  private|const|string, (cat, (cfg.watched), /, (label.books))
+method.insert = watched.app,    private|const|string, (cat, (cfg.watched), /, (label.app))
+method.insert = watched.book,   private|const|string, (cat, (cfg.watched), /, (label.book))
 method.insert = watched.game,   private|const|string, (cat, (cfg.watched), /, (label.game))
 method.insert = watched.movie,  private|const|string, (cat, (cfg.watched), /, (label.movie))
 method.insert = watched.music,  private|const|string, (cat, (cfg.watched), /, (label.music))
 method.insert = watched.other,  private|const|string, (cat, (cfg.watched), /, (label.other))
 method.insert = watched.series, private|const|string, (cat, (cfg.watched), /, (label.series))
 
-execute.throw = {mkdir, -pv, (watched.apps), (watched.books), (watched.game), (watched.movie), (watched.music), (watched.other), (watched.series)}
+execute.throw = {mkdir, -pv, (watched.app), (watched.book), (watched.game), (watched.movie), (watched.music), (watched.other), (watched.series)}
 
-method.insert = load_apps,   simple|private, "load.start=(argument.0), d.custom1.set=(label.apps),   d.delete_tied="
-method.insert = load_books,  simple|private, "load.start=(argument.0), d.custom1.set=(label.books),  d.delete_tied="
+method.insert = load_app,    simple|private, "load.start=(argument.0), d.custom1.set=(label.app),   d.delete_tied="
+method.insert = load_book,   simple|private, "load.start=(argument.0), d.custom1.set=(label.book),  d.delete_tied="
 method.insert = load_game,   simple|private, "load.start=(argument.0), d.custom1.set=(label.game),   d.delete_tied="
 method.insert = load_movie,  simple|private, "load.start=(argument.0), d.custom1.set=(label.movie),  d.delete_tied="
 method.insert = load_music,  simple|private, "load.start=(argument.0), d.custom1.set=(label.music),  d.delete_tied="
 method.insert = load_other,  simple|private, "load.start=(argument.0), d.custom1.set=(label.other),  d.delete_tied="
 method.insert = load_series, simple|private, "load.start=(argument.0), d.custom1.set=(label.series), d.delete_tied="
 
-directory.watch.added = (watched.apps),   load_apps
-directory.watch.added = (watched.books),  load_books
+directory.watch.added = (watched.app),    load_app
+directory.watch.added = (watched.book),   load_book
 directory.watch.added = (watched.game),   load_game
 directory.watch.added = (watched.movie),  load_movie
 directory.watch.added = (watched.music),  load_music
