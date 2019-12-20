@@ -1,0 +1,19 @@
+location ~* "\.(?:css|js)$" {
+    include     includes/headers.nginx;
+    include     includes/.static-files-one-year.nginx;
+}
+
+location ~* "(?:^/(?:browserconfig|crossdomain)\.xml|\.(?:3gp|cur|eot|gif|htc|ico|jng|jpe?g|mp(?:3|4)|og(?:g|v)|otf|png|svgz?|swf|tiff?|ttc|ttf|txt|wav|web(?:m|p)|woff2?))$" {
+    include     includes/headers.nginx;
+    include     includes/.static-files-one-month.nginx;
+}
+
+location ~* "\.(?:rss|atom)$" {
+    include     includes/headers.nginx;
+    include     includes/.static-files-one-hour.nginx;
+}
+
+location ~* "\.(?:manifest|appcache|html?|xml|json)$" {
+    include     includes/headers.nginx;
+    include     includes/.static-files-none.nginx;
+}

@@ -1,0 +1,5 @@
+# Directives to prevent client side caching of a file.
+expires         -1;
+etag            off;
+sendfile        on;
+try_files       $uri =404;

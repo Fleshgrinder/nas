@@ -1,0 +1,15 @@
+@*/
+docker/
+music/
+Plex/
+
+torrent/config/keys/
+torrent/config/log/
+torrent/config/nginx/site-confs/
+torrent/config/rtorrent/rtorrent_sess/
+torrent/config/rutorrent/profiles/settings/*/
+torrent/config/rutorrent/profiles/settings/*.dat
+torrent/config/rutorrent/settings/users/
+torrent/config/www/
+
+torrent/data/
