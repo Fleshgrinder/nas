@@ -21,4 +21,8 @@ apk add --no-cache --upgrade php7-opcache
     cp books.png book.png
 )
 
+cat <<BASHRC >/root/.bashrc
+alias l='ls --almost-all --color=auto --classify --group-directories-first --human-readable -l'
+BASHRC
+
 exec /init
