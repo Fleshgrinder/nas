@@ -85,8 +85,8 @@ method.insert = watched.series, private|const|string, (cat, (cfg.watched), /, (l
 
 execute.throw = {mkdir, -pv, (watched.app), (watched.book), (watched.game), (watched.movie), (watched.music), (watched.other), (watched.series)}
 
-method.insert = load_app,    simple|private, "load.start=(argument.0), d.custom1.set=(label.app),   d.delete_tied="
-method.insert = load_book,   simple|private, "load.start=(argument.0), d.custom1.set=(label.book),  d.delete_tied="
+method.insert = load_app,    simple|private, "load.start=(argument.0), d.custom1.set=(label.app),    d.delete_tied="
+method.insert = load_book,   simple|private, "load.start=(argument.0), d.custom1.set=(label.book),   d.delete_tied="
 method.insert = load_game,   simple|private, "load.start=(argument.0), d.custom1.set=(label.game),   d.delete_tied="
 method.insert = load_movie,  simple|private, "load.start=(argument.0), d.custom1.set=(label.movie),  d.delete_tied="
 method.insert = load_music,  simple|private, "load.start=(argument.0), d.custom1.set=(label.music),  d.delete_tied="
@@ -102,7 +102,7 @@ directory.watch.added = (watched.other),  load_other
 directory.watch.added = (watched.series), load_series
 
 # Moves finished downloads to the completed directory based on the label. This
-# is required since the Media Server watches specific directories and required
+# is required since the Media Server watches specific directories and requires
 # that a movie and a series are in different directories.
 #
 # https://github.com/rakshasa/rtorrent/wiki/Common-Tasks-in-rTorrent#move-completed-torrents-to-a-fixed-location

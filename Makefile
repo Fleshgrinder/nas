@@ -10,22 +10,13 @@ SHELL := bash
 ifndef DEBUG
 .SILENT:
 endif
+export
 
 rutorrent: ## Start rutorrent container locally
-	docker run \
-	    --entrypoint /config/entrypoint.sh \
-	    --env PGID=`id -g` \
-	    --env PUID=`id -u` \
-	    --interactive \
-	    --name=rutorrent \
-	    --publish 51413:51413 \
-	    --publish 80:80 \
-	    --rm \
-	    --tty \
-	    --volume "$(CURDIR)/music/.unsorted:/music/.unsorted" \
-	    --volume "$(CURDIR)/torrent/config:/config" \
-	    --volume "$(CURDIR)/torrent/data:/downloads" \
-	    linuxserver/rutorrent
+	exec bin/$@
+
+rutorrent-no-opcache: PHP_OPCACHE := false
+rutorrent-no-opcache: rutorrent ## Start rutorrent container locally without PHP OPCache
 
 rutorrent-bash: ## Log in to a running ruTorrent container
 	docker exec -it rutorrent bash

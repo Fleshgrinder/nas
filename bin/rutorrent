@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+plugins=()
+for dir in ../rutorrent-*; do
+    dir=$(realpath "$dir")
+    name=$(basename "$dir")
+    name=${name#rutorrent-}
+    if [[ -f "$dir/$name/plugin.info" ]]; then
+        plugins+=(--volume "$dir/$name:/app/rutorrent/plugins/$name")
+    fi
+done
+
+exec docker run \
+    --entrypoint /config/entrypoint.sh \
+    --env PGID="$(id -g)" \
+    --env PUID="$(id -u)" \
+    --env PHP_OPCACHE="${PHP_OPCACHE:-true}" \
+    --interactive \
+    --name=rutorrent \
+    --publish "${RTORRENT_PORT:-51413}:51413" \
+    --publish "${RUTORRENT_PORT:-80}:80" \
+    --rm \
+    --tty \
+    --volume "${CURDIR}/music/.unsorted:/music/.unsorted" \
+    --volume "${CURDIR}/torrent/config:/config" \
+    --volume "${CURDIR}/torrent/data:/downloads" \
+    "${plugins[@]}" \
+    linuxserver/rutorrent
