@@ -1,0 +1,75 @@
+{
+  "cap_add": null,
+  "cap_drop": null,
+  "cmd": "",
+  "cpu_priority": 50,
+  "devices": null,
+  "enable_publish_all_ports": false,
+  "enable_restart_policy": true,
+  "enabled": true,
+  "entrypoint_default": "/config/entrypoint.sh",
+  "env_variables": [
+    {
+      "key": "PUID",
+      "value": "1027"
+    },
+    {
+      "key": "PGID",
+      "value": "100"
+    }
+  ],
+  "exporting": false,
+  "id": "d2e016663ba03523558af0414d37302385f5de1cea747cb22b4837f0be539cfa",
+  "image": "linuxserver/rutorrent:latest",
+  "is_ddsm": false,
+  "is_package": false,
+  "links": [],
+  "memory_limit": 0,
+  "name": "rutorrent",
+  "network": [
+    {
+      "driver": "bridge",
+      "name": "bridge"
+    }
+  ],
+  "network_mode": "bridge",
+  "port_bindings": [
+    {
+      "container_port": 80,
+      "host_port": 8000,
+      "type": "tcp"
+    }
+  ],
+  "privileged": false,
+  "shortcut": {
+    "enable_shortcut": false
+  },
+  "use_host_network": false,
+  "volume_bindings": [
+    {
+      "host_volume_file": "/music/.unsorted",
+      "mount_point": "/music/.unsorted",
+      "type": "rw"
+    },
+    {
+      "host_volume_file": "/torrent/config",
+      "mount_point": "/config",
+      "type": "rw"
+    },
+    {
+      "host_volume_file": "/torrent/data",
+      "mount_point": "/downloads",
+      "type": "rw"
+    },
+    {
+      "host_volume_file": "/video/movie",
+      "mount_point": "/downloads/completed/movie",
+      "type": "rw"
+    },
+    {
+      "host_volume_file": "/video/series",
+      "mount_point": "/downloads/completed/series",
+      "type": "rw"
+    }
+  ]
+}

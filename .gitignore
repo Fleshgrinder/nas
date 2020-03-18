@@ -1,7 +1,8 @@
-@*/
-docker/
-music/
-Plex/
+./*/
+!bin/
+!music/
+!torrent/
+!video/
 
 torrent/config/keys/
 torrent/config/log/
@@ -11,5 +12,4 @@ torrent/config/rutorrent/profiles/
 !torrent/config/rutorrent/profiles/settings/uisettings.json
 torrent/config/rutorrent/settings/users/
 torrent/config/www/
-
 torrent/data/
