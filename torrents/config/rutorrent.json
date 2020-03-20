@@ -62,8 +62,8 @@
       "type": "rw"
     },
     {
-      "host_volume_file": "/video/movie",
-      "mount_point": "/downloads/completed/movie",
+      "host_volume_file": "/video/movies",
+      "mount_point": "/downloads/completed/movies",
       "type": "rw"
     },
     {

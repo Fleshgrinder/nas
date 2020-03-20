@@ -23,7 +23,6 @@ rutorrent-bash: ## Log in to a running ruTorrent container
 
 clean: ## Remove volatile files
 	rm -fr \
-	    music \
 	    torrent/config/keys \
 	    torrent/config/log \
 	    torrent/config/nginx/site-confs \

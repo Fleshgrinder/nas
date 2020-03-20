@@ -1,15 +1,16 @@
+.idea/
 ./*/
 !bin/
 !music/
-!torrent/
+!torrents/
 !video/
 
-torrent/config/keys/
-torrent/config/log/
-torrent/config/nginx/site-confs/
-torrent/config/rtorrent/rtorrent_sess/
-torrent/config/rutorrent/profiles/
-!torrent/config/rutorrent/profiles/settings/uisettings.json
-torrent/config/rutorrent/settings/users/
-torrent/config/www/
-torrent/data/
+torrents/config/keys/
+torrents/config/log/
+torrents/config/nginx/site-confs/
+torrents/config/rtorrent/rtorrent_sess/
+torrents/config/rutorrent/profiles/
+!torrents/config/rutorrent/profiles/settings/uisettings.json
+torrents/config/rutorrent/settings/users/
+torrents/config/www/
+torrents/data/
