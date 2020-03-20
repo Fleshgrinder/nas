@@ -1,16 +1,21 @@
-.idea/
-./*/
-!bin/
-!music/
-!torrents/
-!video/
-
-torrents/config/keys/
-torrents/config/log/
-torrents/config/nginx/site-confs/
-torrents/config/rtorrent/rtorrent_sess/
-torrents/config/rutorrent/profiles/
+# We use a whitelist here because the NAS contains many files we are not
+# interested in and keeping track of all possible files is an impossible task.
+*
+!bin
+!torrents/config/nginx/includes/
+!torrents/config/nginx/main.nginx
+!torrents/config/nginx/nginx.conf
+!torrents/config/php/php-local.ini
+!torrents/config/php/www2.conf
+!torrents/config/rtorrent/rtorrent.rc
 !torrents/config/rutorrent/profiles/settings/uisettings.json
-torrents/config/rutorrent/settings/users/
-torrents/config/www/
-torrents/data/
+!torrents/config/rutorrent/settings/
+!torrents/config/.upgraded-v2
+!torrents/config/entrypoint.sh
+!torrents/config/move-to-unsorted.sh
+!torrents/config/rutorrent.json
+!.editorconfig
+!.gitignore
+!Makefile
+!README.md
+!UNLICENSE.md

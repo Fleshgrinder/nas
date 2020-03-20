@@ -11,6 +11,8 @@ for dir in ../rutorrent-*; do
     fi
 done
 
+mkdir -p music/.unsorted torrents/data video/movies video/series
+
 exec docker run \
     --entrypoint /config/entrypoint.sh \
     --env PGID="$(id -g)" \
@@ -22,9 +24,9 @@ exec docker run \
     --rm \
     --tty \
     --volume "${CURDIR}/music/.unsorted:/music/.unsorted" \
-    --volume "${CURDIR}/torrent/config:/config" \
-    --volume "${CURDIR}/torrent/data:/downloads" \
-    --volume "${CURDIR}/video/movie:/downloads/completed/movie" \
+    --volume "${CURDIR}/torrents/config:/config" \
+    --volume "${CURDIR}/torrents/data:/downloads" \
+    --volume "${CURDIR}/video/movies:/downloads/completed/movies" \
     --volume "${CURDIR}/video/series:/downloads/completed/series" \
     "${plugins[@]}" \
     linuxserver/rutorrent
