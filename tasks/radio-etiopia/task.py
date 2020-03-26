@@ -119,7 +119,6 @@ with requests.Session() as session:
                 sys.exit(0)
 
             if episode.media_path.exists():
-                print(f'[INFO] "{episode}" already exists: {episode.path}')
                 continue
 
             if episode.media_url is None:
