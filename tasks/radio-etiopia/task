@@ -5,5 +5,5 @@ exec docker run \
     --tmpfs '/tmp:rw,noexec,nosuid,size=1g' \
     --volume '/volume1/test/music/R/Rádio Etiópia:/out' \
     --volume "$(dirname "${BASH_SOURCE[0]}"):/usr/local/src" \
-    --user Richard:users \
+    --user "$(id -u Richard):$(id -g Richard)" \
     radio-etiopia-task
