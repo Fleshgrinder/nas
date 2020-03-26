@@ -3,6 +3,7 @@ set -Eeuo pipefail
 exec docker run \
     --rm \
     --tmpfs '/tmp:rw,noexec,nosuid,size=1g' \
-    --volume '/volume1/music/R/Rádio Etiópia:/out' \
+    --volume '/volume1/test/music/R/Rádio Etiópia:/out' \
+    --volume "$(dirname "${BASH_SOURCE[0]}"):/usr/local/src" \
     --user Richard:users \
     radio-etiopia-task
