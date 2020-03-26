@@ -11,7 +11,8 @@ uid=${TASK_UID:-$(user-uid)}
 gid=${TASK_GID:-$(user-gid)}
 image="${TASK_IMAGE:-radio-etiopia-task}"
 
-exec docker run \
+set +e
+docker run \
     --name "$name" \
     --rm \
     --tmpfs '/tmp:rw,noexec,nosuid,size=1g' \
@@ -19,3 +20,7 @@ exec docker run \
     --volume "$src:/usr/local/src" \
     --user "$uid:$gid" \
     "$image"
+status=$?
+set -e
+command -v synoindex && synoindex -R "$out"
+exit $status
