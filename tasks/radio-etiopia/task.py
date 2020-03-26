@@ -13,9 +13,8 @@ from PIL import Image
 from mutagen.id3 import ID3
 from titlecase import titlecase
 
-out = Path('/volume1/music/R/Rádio Etiópia')
-tmp = Path('/dev/shm/task-radio-etiopia')
-tmp.mkdir()
+out = Path('/out')
+tmp = Path('/tmp')
 
 
 @atexit.register
