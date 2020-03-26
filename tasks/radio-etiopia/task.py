@@ -15,11 +15,12 @@ from titlecase import titlecase
 
 out = Path('/out')
 tmp = Path('/tmp')
-
-
-@atexit.register
-def cleanup():
-    shutil.rmtree(tmp)
+guid_path = out / '.guid'
+guid = guid_path.read_text(encoding='utf-8') if guid_path.exists() else ''
+latest_guid = ''
+page = 0
+page_count = sys.maxsize
+headers = {'User-Agent': 'Fleshgrinder-NAS/1.0 (+https://github.com/Fleshgrinder/nas)'}
 
 
 class Tmp:
@@ -35,6 +36,7 @@ class Tmp:
 
 class Episode:
     _nr_pattern = re.compile(r'^.*#\s*(\d+).*$')
+    _ff_pattern = re.compile(r'(https?://[a-z0-9.]*filefactory\\.com[^ ]*[_.]mp3)')
     cover_filename = 'folder.jpg'
     cover_thumb_filename = 'thumb.jpg'
     readme_filename = 'README.txt'
@@ -76,18 +78,18 @@ class Episode:
         self.url_path: Path = self.path / self.url_filename
 
         self.permalink_url: str = data['permalink_url']
-        self.media_url: Union[str, None] = data.get('media_url', None)
         self.description: str = data['description'].strip().replace('\r\n', '\n') + '\n'
         self.image_url: str = data['xl_image_url']
         self.guid: str = data['episode_guid']
 
+        self.media_url: Union[str, None] = data.get('media_url', None)
+        if self.media_url is None:
+            match = self._ff_pattern.match(self.description)
+            if match is not None:
+                self.media_url = match.group(1)
+
     def __str__(self):
         return f'{self.date} - {self.title}'
-
-
-guid_path = out / '.guid'
-guid = guid_path.read_text(encoding='utf-8') if guid_path.exists() else ''
-latest_guid = ''
 
 
 @atexit.register
@@ -96,9 +98,6 @@ def write_guid():
     guid_path.write_text(latest_guid, encoding='utf-8')
 
 
-page = 0
-page_count = sys.maxsize
-headers = {'User-Agent': 'Fleshgrinder-NAS/1.0 (+https://github.com/Fleshgrinder/nas)'}
 with requests.Session() as session:
     while page < page_count:
         with session.get(
@@ -119,12 +118,12 @@ with requests.Session() as session:
             if latest_guid == guid:
                 sys.exit(0)
 
-            if episode.media_url is None:
-                print(f'[ERR] "{episode}" has no media url: {episode.permalink_url}')
-                continue
-
             if episode.media_path.exists():
                 print(f'[INFO] "{episode}" already exists: {episode.path}')
+                continue
+
+            if episode.media_url is None:
+                print(f'[ERR] "{episode}" has no media url: {episode.permalink_url}')
                 continue
 
             print(f'{episode.path} … ', end='')
