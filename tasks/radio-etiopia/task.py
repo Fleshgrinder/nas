@@ -125,7 +125,6 @@ with requests.Session() as session:
                 print(f'[ERR] "{episode}" has no media url: {episode.permalink_url}')
                 continue
 
-            print(f'{episode.path} … ', end='')
             episode.path.mkdir(parents=True, exist_ok=True)
 
             episode.url_path.write_text(f'[InternetShortcut]\r\nURL={episode.permalink_url}')
