@@ -1,3 +1,2 @@
-#!/usr/bin/env bash
-set -Eeuo pipefail
+#!/bin/sh
 exec docker build -t radio-etiopia-task .

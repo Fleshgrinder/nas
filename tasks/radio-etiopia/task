@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-set -Eeuo pipefail
-exec docker run \
-    --rm \
-    --tmpfs '/tmp:rw,noexec,nosuid,size=1g' \
-    --volume '/volume1/music/R/Rádio Etiópia:/out' \
-    --volume "$(dirname "${BASH_SOURCE[0]}"):/usr/local/src" \
-    --user "$(id -u Richard):$(id -g Richard)" \
-    radio-etiopia-task

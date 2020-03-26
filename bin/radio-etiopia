@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+root=$(dirname "$(dirname "${BASH_SOURCE[0]}")")
+PATH="$root/bin:$PATH"
+
+name="${TASK_NAME:-radio-etiopia}"
+out="${TASK_OUT_ROOT:-$root}/music/R/Rádio Etiópia"
+src="${TASK_SRC_ROOT:-$root}/tasks/radio-etiopia"
+uid=${TASK_UID:-$(user-uid)}
+gid=${TASK_GID:-$(user-gid)}
+image="${TASK_IMAGE:-radio-etiopia-task}"
+
+exec docker run \
+    --name "$name" \
+    --rm \
+    --tmpfs '/tmp:rw,noexec,nosuid,size=1g' \
+    --volume "$out:/out" \
+    --volume "$src:/usr/local/src" \
+    --user "$uid:$gid" \
+    "$image"

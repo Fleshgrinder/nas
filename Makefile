@@ -23,15 +23,15 @@ rutorrent-bash: ## Log in to a running ruTorrent container
 
 clean: ## Remove volatile files
 	rm -fr \
-	    torrent/config/keys \
-	    torrent/config/log \
-	    torrent/config/nginx/site-confs \
-	    torrent/config/rtorrent/rtorrent_sess \
-	    torrent/config/rutorrent/profiles/settings/*.dat \
-	    torrent/config/rutorrent/profiles/settings/*/ \
-	    torrent/config/rutorrent/profiles/tmp \
-	    torrent/config/rutorrent/profiles/torrents \
-	    torrent/config/rutorrent/profiles/users \
-	    torrent/config/rutorrent/settings/users \
-	    torrent/config/www \
-	    torrent/data
+	    torrents/config/keys \
+	    torrents/config/log \
+	    torrents/config/nginx/site-confs \
+	    torrents/config/rtorrent/rtorrent_sess \
+	    torrents/config/rutorrent/profiles/settings/*.dat \
+	    torrents/config/rutorrent/profiles/settings/*/ \
+	    torrents/config/rutorrent/profiles/tmp \
+	    torrents/config/rutorrent/profiles/torrents \
+	    torrents/config/rutorrent/profiles/users \
+	    torrents/config/rutorrent/settings/users \
+	    torrents/config/www \
+	    torrents/data
