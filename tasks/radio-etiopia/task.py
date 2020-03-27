@@ -156,7 +156,7 @@ with requests.Session() as session:
 
             episode.path.mkdir(parents=True, exist_ok=True)
 
-            episode.url_path.write_text(f'[InternetShortcut]\r\nURL={episode.permalink_url}')
+            episode.url_path.write_text(f'[InternetShortcut]\nURL={episode.permalink_url}\n')
             episode.readme_path.write_text(episode.description, encoding='utf-8')
 
             with Tmp(episode.cover_path) as cover_tmp_path:
