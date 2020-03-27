@@ -1,2 +1,3 @@
-#!/bin/sh
-exec docker build -t radio-etiopia-task .
+#!/usr/bin/env bash
+set -Eeuo pipefail
+exec docker build -t radio-etiopia-task "$(dirname "${BASH_SOURCE[0]}")"
