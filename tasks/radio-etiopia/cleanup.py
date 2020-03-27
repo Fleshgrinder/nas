@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import re
+import sys
 from pathlib import Path
 from sys import exit
 from unicodedata import category, normalize
@@ -53,7 +54,7 @@ def titlecase(t: str) -> str:
     return r
 
 
-root = Path('/out')
+root = Path(sys.argv[1])
 for year_path in root.iterdir():
     for episode_path in year_path.iterdir():
         media_path = next(it for it in episode_path.iterdir() if it.name.endswith('.mp3'))
