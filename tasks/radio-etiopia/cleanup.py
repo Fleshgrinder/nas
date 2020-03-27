@@ -54,47 +54,46 @@ def titlecase(t: str) -> str:
 
 
 root = Path('/out')
-for year_path in root.iterdir():
-    for episode_path in year_path.iterdir():
-        media_path = next(it for it in episode_path.iterdir() if it.name.endswith('.mp3'))
-        media = EasyID3(media_path)
+for episode_path in root.iterdir():
+    media_path = next(it for it in episode_path.iterdir() if it.name.endswith('.mp3'))
+    media = EasyID3(media_path)
 
-        date = media.get('date', [''])[0]
-        matches = date_pattern.match(media_path.parent.stem)
-        if matches is None:
-            print(f'[ERR] NO DATE {media_path.parent}')
+    date = media.get('date', [''])[0]
+    matches = date_pattern.match(media_path.parent.stem)
+    if matches is None:
+        print(f'[ERR] NO DATE {media_path.parent}')
+        exit(1)
+
+    dir_date = matches.group(1)
+    if dir_date != date:
+        if len(date) != 10:
+            date = dir_date
+        else:
+            print(f'[ERR] DATE MISMATCH {date} != {dir_date}')
             exit(1)
 
-        dir_date = matches.group(1)
-        if dir_date != date:
-            if len(date) != 10:
-                date = dir_date
-            else:
-                print(f'[ERR] DATE MISMATCH {date} != {dir_date}')
-                exit(1)
+    title = titlecase(media['title'][0])
 
-        title = titlecase(media['title'][0])
+    # filename = title \
+    #     .replace('"', '') \
+    #     .replace('<', '') \
+    #     .replace('>', '') \
+    #     .replace(':', '') \
+    #     .replace('/', '-') \
+    #     .replace('\\', '-') \
+    #     .replace('|', '-') \
+    #     .replace('?', '') \
+    #     .replace('*', '') \
+    #     .rstrip('.')
 
-        # filename = title \
-        #     .replace('"', '') \
-        #     .replace('<', '') \
-        #     .replace('>', '') \
-        #     .replace(':', '') \
-        #     .replace('/', '-') \
-        #     .replace('\\', '-') \
-        #     .replace('|', '-') \
-        #     .replace('?', '') \
-        #     .replace('*', '') \
-        #     .rstrip('.')
+    media = ID3(media_path)
+    media.delete()
+    media.add(mutagen.id3.TPE1(encoding=3, text='Rádio Etiópia'))  # artist
+    media.add(mutagen.id3.TALB(encoding=3, text=title))  # album
+    media.add(mutagen.id3.TIT2(encoding=3, text=title))  # title
+    media.add(mutagen.id3.TDRC(encoding=3, text=date))  # date
+    media.add(mutagen.id3.TCON(encoding=3, text='Podcast'))  # genre
+    media.add(mutagen.id3.TRCK(encoding=3, text='1/1'))  # track
+    media.save()
 
-        media = ID3(media_path)
-        media.delete()
-        media.add(mutagen.id3.TPE1(encoding=3, text='Rádio Etiópia'))  # artist
-        media.add(mutagen.id3.TALB(encoding=3, text=title))  # album
-        media.add(mutagen.id3.TIT2(encoding=3, text=title))  # title
-        media.add(mutagen.id3.TDRC(encoding=3, text=date))  # date
-        media.add(mutagen.id3.TCON(encoding=3, text='Podcast'))  # genre
-        media.add(mutagen.id3.TRCK(encoding=3, text='1/1'))  # track
-        media.save()
-
-        print(media_path.relative_to(root))
+    print(media_path.relative_to(root))
