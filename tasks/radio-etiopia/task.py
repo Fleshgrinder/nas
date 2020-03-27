@@ -11,7 +11,6 @@ import mutagen
 import requests
 from PIL import Image
 from mutagen.id3 import ID3
-from titlecase import titlecase
 
 out = Path('/out')
 tmp = Path('/tmp')
