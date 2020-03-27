@@ -1,4 +1,5 @@
 FROM python:3-slim-buster
+ENV PYTHONUNBUFFERED=true
 VOLUME /out
 VOLUME /tmp
 WORKDIR /usr/local/src
