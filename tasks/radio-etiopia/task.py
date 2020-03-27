@@ -5,7 +5,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Union
-from unicodedata import normalize
+from unicodedata import category, normalize
 
 import mutagen
 import requests
@@ -22,6 +22,45 @@ page = 0
 page_count = sys.maxsize
 headers = {'User-Agent': 'Fleshgrinder-NAS/1.0 (+https://github.com/Fleshgrinder/nas)'}
 
+nr_series_pattern = re.compile(r'^.*#\s*(\d+).*$')
+ws_replace_pattern = re.compile(r' +')
+
+
+def titlecase(t: str) -> str:
+    t = t.strip()
+    t = normalize('NFC', t)
+    t = t.casefold()
+
+    match = nr_series_pattern.match(t)
+    if match is not None:
+        return f'# {match.group(1)}'
+
+    t = ws_replace_pattern.sub(' ', t)
+
+    # https://en.wikipedia.org/wiki/Apostrophe#Unicode
+    t = t.replace(' ii', ' II') \
+        .replace('....', '…') \
+        .replace('...', '…') \
+        .replace(' !', '!') \
+        .replace(' ?', '?') \
+        .replace(' ,', ',') \
+        .replace('( ', '(') \
+        .replace(' )', ')') \
+        .replace("'", '\u02BC') \
+        .replace('\u2019', '\u02BC')
+
+    r = ''
+    pc = 'Z'
+    for c in t:
+        # https://www.unicode.org/reports/tr44/#General_Category_Values
+        if pc[0] in ['C', 'M', 'P', 'Z']:
+            r += c.upper()
+        else:
+            r += c
+        pc = category(c)[0]
+
+    return r
+
 
 class Tmp:
     def __init__(self, path: Path):
@@ -35,7 +74,6 @@ class Tmp:
 
 
 class Episode:
-    _nr_pattern = re.compile(r'^.*#\s*(\d+).*$')
     _ff_pattern = re.compile(r'(https?://[a-z0-9.]*filefactory\\.com[^ ]*[_.]mp3)')
     cover_filename = 'folder.jpg'
     cover_thumb_filename = 'thumb.jpg'
@@ -43,21 +81,13 @@ class Episode:
     url_filename = 'Podomatic.url'
 
     def __init__(self, data):
-        self.title: str = ' '.join(titlecase(it.casefold()) for it in normalize('NFC', data['title'].strip()).split()) \
-            .replace('....', '…') \
-            .replace('...', '…') \
-            .replace(' ?', '?') \
-            .replace(' ,', ',') \
-            .replace('Ii', 'II')
-        match = self._nr_pattern.match(self.title)
-        if match is not None:
-            self.title = f'# {match.group(1)}'
+        self.title: str = titlecase(data['title'])
 
         dt = datetime.strptime(data['published_datetime'], '%Y-%m-%dT%H:%M:%SZ')
         self.date: str = f'{dt:%Y-%m-%d}'
         self.year: str = f'{dt:%Y}'
 
-        filename = f'{self.title}' \
+        filename = self.title \
             .replace('"', '') \
             .replace('<', '') \
             .replace('>', '') \
@@ -67,7 +97,7 @@ class Episode:
             .replace('|', '-') \
             .replace('?', '') \
             .replace('*', '') \
-            .rstrip()
+            .rstrip('.')
         self.dirname: str = f'{self.date} - {filename}'
         self.path: Path = out / self.year / self.dirname
         self.media_filename: str = f'01 - {filename}.mp3'
