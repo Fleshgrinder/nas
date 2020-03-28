@@ -26,11 +26,11 @@ for dir in "${RUTORRENT_PLUGIN_ROOT:-$root/..}"/rutorrent-*; do
 done
 
 declare -A volumes=()
-volumes['/music/.unsorted']='/music/.unsorted'
-volumes['/torrents/config']='/config'
-volumes['/torrents/data']='/downloads'
-volumes['/video/movies']='/downloads/completed/movies'
-volumes['/video/series']='/downloads/completed/series'
+volumes['music/.unsorted']='/music/.unsorted'
+volumes['torrents/config']='/config'
+volumes['torrents/data']='/downloads'
+volumes['video/movies']='/downloads/completed/movies'
+volumes['video/series']='/downloads/completed/series'
 for k in "${!volumes[@]}"; do
     host_path="$root/$k"
     mkdir -pv "$host_path"
