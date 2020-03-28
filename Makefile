@@ -29,12 +29,16 @@ clean: ## Remove volatile files
 	    torrents/config/keys \
 	    torrents/config/log \
 	    torrents/config/nginx/site-confs \
-	    torrents/config/rtorrent/rtorrent_sess \
 	    torrents/config/rutorrent/profiles/settings/*.dat \
 	    torrents/config/rutorrent/profiles/settings/*/ \
 	    torrents/config/rutorrent/profiles/tmp \
 	    torrents/config/rutorrent/profiles/torrents \
 	    torrents/config/rutorrent/profiles/users \
 	    torrents/config/rutorrent/settings/users \
-	    torrents/config/www \
+	    torrents/config/www
+
+cleaner: clean ## Remove all files
+	rm -fr \
+	    torrents/config/rtorrent/log \
+	    torrents/config/rtorrent/session \
 	    torrents/data
