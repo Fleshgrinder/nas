@@ -1,0 +1,5 @@
+#!/bin/sh
+exec rm -fr \
+    torrents/config/rtorrent/log \
+    torrents/config/rtorrent/session \
+    torrents/data

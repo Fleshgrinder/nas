@@ -25,20 +25,7 @@ rutorrent-bash: ## Log in to a running ruTorrent container
 	docker exec -it rutorrent bash
 
 clean: ## Remove volatile files
-	rm -fr \
-	    torrents/config/keys \
-	    torrents/config/log \
-	    torrents/config/nginx/site-confs \
-	    torrents/config/rutorrent/profiles/settings/*.dat \
-	    torrents/config/rutorrent/profiles/settings/*/ \
-	    torrents/config/rutorrent/profiles/tmp \
-	    torrents/config/rutorrent/profiles/torrents \
-	    torrents/config/rutorrent/profiles/users \
-	    torrents/config/rutorrent/settings/users \
-	    torrents/config/www
+	exec bin/$@
 
 cleaner: clean ## Remove all files
-	rm -fr \
-	    torrents/config/rtorrent/log \
-	    torrents/config/rtorrent/session \
-	    torrents/data
+	exec bin/$@
