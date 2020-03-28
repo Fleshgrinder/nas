@@ -1,44 +1,50 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
-shopt -s nullglob
 
 root=$(dirname "$(dirname "$(realpath "${BASH_SOURCE[0]}")")")
-PATH="$root/bin:$PATH"
 
-plugins=()
+PATH="$root/bin:$PATH"
+uid=${RUTORRENT_UID:-$(user-uid)}
+gid=${RUTORRENT_GID:-$(user-gid)}
+
+declare -a args=()
+args=(--interactive --tty)
+for arg in "$@"; do
+    if [[ "$arg" == -d || "$arg" == --daemon ]]; then
+        args=(--detach)
+    fi
+done
+
+shopt -s nullglob
 for dir in "${RUTORRENT_PLUGIN_ROOT:-$root/..}"/rutorrent-*; do
     dir=$(realpath "$dir")
     name=$(basename "$dir")
     name=${name#rutorrent-}
     if [[ -f "$dir/$name/plugin.info" ]]; then
-        plugins+=(--volume "$dir/$name:/app/rutorrent/plugins/$name")
+        args+=(--volume "$dir/$name:/app/rutorrent/plugins/$name")
     fi
 done
 
-for dir in music/.unsorted torrents/data video/movies video/series; do
-    dir=$root/$dir
-    if [[ ! -d "$dir" ]]; then
-        mkdir -p "$dir"
-    fi
+declare -A volumes=()
+volumes['/music/.unsorted']='/music/.unsorted'
+volumes['/torrents/config']='/config'
+volumes['/torrents/data']='/downloads'
+volumes['/video/movies']='/downloads/completed/movies'
+volumes['/video/series']='/downloads/completed/series'
+for k in "${!volumes[@]}"; do
+    host_path="$root/$k"
+    mkdir -p "$host_path"
+    chown "$uid:$gid" "$host_path"
+    args+=(--volume "$host_path:${volumes[$k]}")
 done
-
-uid=${RUTORRENT_UID:-$(user-uid)}
-gid=${RUTORRENT_GID:-$(user-gid)}
 
 exec docker run \
+    "${args[@]}" \
     --entrypoint /config/entrypoint.sh \
     --env PUID="$uid" \
     --env PGID="$gid" \
     --env PHP_OPCACHE="${PHP_OPCACHE:-true}" \
-    --interactive \
     --name=rutorrent \
     --publish "${RUTORRENT_PORT:-8000}:80" \
     --rm \
-    --tty \
-    --volume "$root/music/.unsorted:/music/.unsorted" \
-    --volume "$root/torrents/config:/config" \
-    --volume "$root/torrents/data:/downloads" \
-    --volume "$root/video/movies:/downloads/completed/movies" \
-    --volume "$root/video/series:/downloads/completed/series" \
-    "${plugins[@]}" \
     linuxserver/rutorrent

@@ -22,7 +22,7 @@ rutorrent-no-opcache: PHP_OPCACHE := false
 rutorrent-no-opcache: rutorrent ## Start rutorrent container locally without PHP OPCache
 
 rutorrent-bash: ## Log in to a running ruTorrent container
-	docker exec -it rutorrent bash
+	exec docker exec -it rutorrent bash
 
 clean: ## Remove volatile files
 	exec bin/$@
