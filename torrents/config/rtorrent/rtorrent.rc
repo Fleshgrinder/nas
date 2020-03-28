@@ -7,10 +7,10 @@
 
 method.insert = cfg.config,    private|const|string, /config/rtorrent
 method.insert = cfg.log,       private|const|string, (cat, (cfg.config), /log)
-method.insert = cfg.session,   private|const|string, (cat, (cfg.config), /session)
+method.insert = cfg.session,   private|const|string, (cat, (cfg.config), /rtorrent_sess)
 
 execute.throw = {mkdir, -pv, (cfg.log), (cfg.session)}
-execute.throw = {chown, abc:abc, (cfg.log), (cfg.session)}
+execute.throw = {chown, -v, abc:abc, (cfg.log), (cfg.session)}
 
 # Enables logging of executed commands.
 log.execute = (cat, (cfg.log), /exec.log)
@@ -74,8 +74,8 @@ trackers.use_udp.set                 = no
 method.insert           = cfg.scgi_socket, private|const|string, /run/php/.rtorrent.sock
 execute.throw           = rm, -f, (cfg.scgi_socket)
 network.scgi.open_local = (cfg.scgi_socket)
-schedule2               = socket_chmod, 0, 0, (cat, "execute.throw = chmod, 0660, ", (cfg.scgi_socket))
-schedule2               = socket_chgrp, 0, 0, (cat, "execute.throw = chgrp, abc, ", (cfg.scgi_socket))
+schedule2               = socket_chmod, 0, 0, (cat, "execute.throw = chmod, -v, 0660, ", (cfg.scgi_socket))
+schedule2               = socket_chgrp, 0, 0, (cat, "execute.throw = chgrp, -v, abc, ", (cfg.scgi_socket))
 
 # Allows me to simply drop a torrents file into my Synology Drive and it will be
 # downloaded automatically without requiring me to access the UI.
