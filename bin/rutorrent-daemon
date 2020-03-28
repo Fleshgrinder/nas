@@ -3,8 +3,8 @@ set -Eeuo pipefail
 
 root=$(dirname "$(dirname "$(realpath "${BASH_SOURCE[0]}")")")
 PATH="$root/bin:$PATH"
-uid=$(user-uid)
-gid=$(user-gid)
+uid=${RUTORRENT_UID:-$(user-uid)}
+gid=${RUTORRENT_GID:-$(user-gid)}
 
 exec docker run \
     --detach \

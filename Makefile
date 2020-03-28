@@ -12,6 +12,9 @@ ifndef DEBUG
 endif
 export
 
+rutorrent: RUTORRENT_UID := $(shell id -u)
+rutorrent: RUTORRENT_GID := $(shell id -g)
+rutorrent: RUTORRENT_PORT ?= 80
 rutorrent: ## Start rutorrent container locally
 	exec bin/$@
 

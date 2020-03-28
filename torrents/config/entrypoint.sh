@@ -13,9 +13,8 @@ fi
 (
     cd /app/rutorrent/plugins
     cp tracklabels/labels/movie.png tracklabels/labels/movies.png
-    # It is possible to mount a live version of the plugin, in that case we do not
-
-    # want to override it.
+    # It is possible to mount a live version of the plugin, in that case we do
+    # not want to override it.
     if [[ ! -d rename ]]; then
         src=/usr/local/src/github.com/Fleshgrinder/rutorrent-rename
         git clone https://github.com/Fleshgrinder/rutorrent-rename.git "$src"
@@ -24,7 +23,8 @@ fi
 )
 
 cat <<BASHRC >/root/.bashrc
-alias l='ls --almost-all --color=auto --classify --group-directories-first --human-readable -l'
+alias l='ls -C --classify --group-directories-first'
+alias ll='ls -l --almost-all --classify --group-directories-first --human-readable'
 BASHRC
 
 exec /init
