@@ -5,9 +5,6 @@ services:
   radio-etiopia:
     build:
       context: tasks/radio-etiopia
-      args:
-        GID: $DOCKER_GID
-        UID: $DOCKER_UID
     container_name: radio-etiopia
     image: fleshgrinder/nas-radio-etiopia:local
     network_mode: host
