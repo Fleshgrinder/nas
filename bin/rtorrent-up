@@ -1,6 +1,6 @@
 #!/bin/sh
 DOCKER_UID=$(id -u Richard)
-DOCKER_GID=$(id -g users)
+DOCKER_GID=$(id -g Richard)
 FLOOD_SECRET=$(openssl rand -hex 40)
 export DOCKER_UID DOCKER_GID FLOOD_SECRET
 exec docker-compose --project-name rtorrent up --detach rtorrent rtorrent-flood
