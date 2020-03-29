@@ -17,8 +17,9 @@ ij_smart_tabs = false
 ij_visual_guides = 80, 120, 160
 ij_wrap_on_typing = false
 
-[{*.json, *.md}]
+[{*.json, *.md, *.yaml}]
 indent_size = 2
-trim_trailing_whitespace = false
-
 ij_continuation_indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false

@@ -1,6 +1,0 @@
-# Directives for one hour client side caching of a file with revalidation.
-add_header      Cache-Control 'public, must-revalidate';
-expires         1h;
-etag            off;
-sendfile        on;
-try_files       $uri =404;

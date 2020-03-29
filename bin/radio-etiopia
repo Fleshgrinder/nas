@@ -1,26 +1,20 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-root=$(dirname "$(dirname "$(realpath "${BASH_SOURCE[0]}")")")
-PATH="$root/bin:$PATH"
+# Go to the root directory where the docker-compose.yaml file resides.
+cd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")"
 
-name="${TASK_NAME:-radio-etiopia}"
-out="${TASK_OUT_ROOT:-$root}/music/R/Rádio Etiópia"
-src="${TASK_SRC_ROOT:-$root}/tasks/radio-etiopia"
-uid=${TASK_UID:-$(user-uid)}
-gid=${TASK_GID:-$(user-gid)}
-image="${TASK_IMAGE:-radio-etiopia-task}"
+# Make sure we have the latest docker-compose version that we installed with
+# python3 -m venv venv previously.
+source venv/bin/activate
 
-set +e
-docker run \
-    --name "$name" \
-    --rm \
-    --tmpfs '/tmp:rw,noexec,nosuid,size=1g' \
-    --volume "$out:/out" \
-    --volume "$src:/usr/local/src" \
-    --user "$uid:$gid" \
-    "$image"
-status=$?
-set -e
-command -v synoindex && synoindex -R "$out"
-exit $status
+# Get the UID and GID of the local user the files belong and should belong to.
+DOCKER_UID=$(id -u Richard)
+DOCKER_GID=$(id -g users)
+export DOCKER_UID DOCKER_GID
+
+# Execute the actual task…
+docker-compose --project-name radio-etiopia run radio-etiopia
+
+# Tell AudioStation that the files have changed…
+synoindex -R 'music/R/Rádio Etiópia'

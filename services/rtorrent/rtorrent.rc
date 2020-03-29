@@ -1,0 +1,59 @@
+dht.mode.set                         = disable
+directory.default.set                = /data/incoming
+encoding.add                         = UTF-8
+#log.execute                          = /dev/stdout
+log.open_file                        = log, /dev/stdout
+log.add_output                       = info, log
+network.bind_address.set             = 0.0.0.0
+network.http.dns_cache_timeout.set   = 25
+network.http.max_open.set            = 99
+network.max_open_files.set           = 600
+network.max_open_sockets.set         = 999
+network.port_random.set              = no
+network.port_range.set               = 50000-50000
+network.receive_buffer.size.set      = 4M
+network.scgi.open_local              = /home/rtorrent/run/rpc.sock
+network.send_buffer.size.set         = 12M
+network.tos.set                      = throughput
+pieces.hash.on_completion.set        = yes
+pieces.memory.max.set                = 2048M
+pieces.preload.min_rate.set          = 5120
+pieces.preload.min_size.set          = 262144
+pieces.preload.type.set              = 2
+protocol.encryption.set              = require, enable_retry
+protocol.pex.set                     = no
+session.path.set                     = /home/rtorrent/session
+session.use_lock.set                 = no
+system.daemon.set                    = true
+system.file.allocate                 = 1
+system.umask.set                     = 0027
+throttle.global_down.max_rate.set_kb = 0
+throttle.global_up.max_rate.set_kb   = 0
+throttle.max_downloads.global.set    = 300
+throttle.max_downloads.set           = 50
+throttle.max_peers.normal.set        = 100
+throttle.max_peers.seed.set          = -1
+throttle.max_uploads.global.set      = 300
+throttle.max_uploads.set             = 50
+throttle.min_peers.normal.set        = 99
+throttle.min_peers.seed.set          = -1
+trackers.numwant.set                 = 100
+trackers.use_udp.set                 = no
+
+# Automatically tag download based on the tracker URL.
+method.insert  = d.get_tag, private|simple, "execute.capture = get-tags, (t.multicall, (d.hash), , t.url=)"
+method.insert  = d.auto_tag, private|simple, "d.custom1.set = (d.get_tag)"
+method.set_key = event.download.inserted_new, tag, "if = (equal, (d.custom1), ), (d.auto_tag)"
+
+# Move completed download to longtime storage, music is additionally stored in
+# a special directory that is synced to my workstation so that I always know
+# what I still need to sort in my library.
+method.insert  = d.completed_path,  private|simple, "cat = /data/completed/, (d.custom1)"
+method.insert  = d.incoming_path,   private|simple, "if = (d.is_multi_file), (cat, (d.directory), /), (cat, (d.directory), /, (d.name))"
+method.insert  = move_to_completed, private|simple, "\
+                 d.directory.set     = (argument.1); \
+                 execute.throw       = mkdir, -pv, (argument.1); \
+                 execute.throw       = mv, -fv, (argument.0), (argument.1); \
+                 execute.throw.bg    = move-to-unsorted, (d.custom1), (d.completed_path), (d.base_filename); \
+                 d.save_full_session ="
+method.set_key = event.download.finished, completed, "move_to_completed = (d.incoming_path), (d.completed_path)"

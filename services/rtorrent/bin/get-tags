@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+case "$1" in
+*debian* | *ubuntu*) printf apps ;;
+*flacsfor.me*) printf music ;;
+*landof.tv*) printf series ;;
+*passthepopcorn.me*) printf movies ;;
+esac

@@ -1,0 +1,133 @@
+version: '3.7'
+
+services:
+  # tasks/radio-etiopia/task.py
+  radio-etiopia:
+    build:
+      context: tasks/radio-etiopia
+      args:
+        GID: $DOCKER_GID
+        UID: $DOCKER_UID
+    container_name: radio-etiopia
+    image: fleshgrinder/nas-radio-etiopia:local
+    network_mode: host
+    tmpfs: /tmp
+    user: $DOCKER_UID:$DOCKER_GID
+    volumes:
+      - type: bind
+        source: ./tasks/radio-etiopia
+        target: /usr/local/src
+        read_only: true
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./music/R/Rádio Etiópia
+        target: /out
+        volume:
+          nocopy: true
+      - type: tmpfs
+        target: /tmp
+
+  # https://github.com/rakshasa/rtorrent
+  rtorrent:
+    build:
+      context: services/rtorrent
+      args:
+        GID: $DOCKER_GID
+        UID: $DOCKER_UID
+    container_name: rtorrent
+    image: fleshgrinder/nas-rtorrent:local
+    network_mode: host
+    #restart: always
+    user: $DOCKER_UID:$DOCKER_GID
+    volumes:
+      - type: bind
+        source: ./services/rtorrent/rtorrent.rc
+        target: /home/rtorrent/.rtorrent.rc
+        read_only: true
+      - type: bind
+        source: ./services/rtorrent/bin
+        target: /usr/local/bin
+        read_only: true
+      - type: bind
+        source: ./data/rtorrent/run
+        target: /home/rtorrent/run
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./data/rtorrent/session
+        target: /home/rtorrent/session
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./music/.unsorted
+        target: /data/unsorted
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./data/rtorrent/incoming
+        target: /data/incoming
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./downloads
+        target: /data/completed
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./video/movies
+        target: /data/completed/movies
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./video/series
+        target: /data/completed/series
+        volume:
+          nocopy: true
+
+  # https://github.com/Flood-UI/flood
+  rtorrent-flood:
+    build:
+      context: https://github.com/Flood-UI/flood.git
+    container_name: rtorrent-flood
+    environment:
+      - FLOOD_SECRET
+    image: fleshgrinder/nas-rtorrent-flood:local
+    network_mode: host
+    #restart: always
+    user: $DOCKER_UID:$DOCKER_GID
+    volumes:
+      - type: bind
+        source: ./services/rtorrent-flood/config.js
+        target: /usr/src/app/config.js
+        read_only: true
+      - type: bind
+        source: ./data/rtorrent-flood
+        target: /usr/src/app/config/server
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./data/rtorrent/run
+        target: /usr/src/app/config/rtorrent
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./data/rtorrent/incoming
+        target: /data/incoming
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./downloads
+        target: /data/completed
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./video/movies
+        target: /data/completed/movies
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./video/series
+        target: /data/completed/series
+        volume:
+          nocopy: true
