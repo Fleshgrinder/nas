@@ -5,8 +5,11 @@ set -Eeuo pipefail
 cd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")"
 
 # Make sure we have the latest docker-compose version that we installed with
-# python3 -m venv venv previously.
+# python3 -m venv venv previously. We disable all flags because the Python
+# scripts fail to execute with them.
+set +Eeuo pipefail
 source venv/bin/activate
+set -Eeuo pipefail
 
 # Get the UID and GID of the local user the files belong and should belong to.
 DOCKER_UID=$(id -u Richard)
