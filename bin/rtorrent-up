@@ -1,6 +1,14 @@
-#!/bin/sh
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+if ((EUID != 0)); then
+    echo 'Super-user privileges are required to run Docker on Synology.' >&2
+    exit 1
+fi
+
 DOCKER_UID=$(id -u Richard)
 DOCKER_GID=$(id -g Richard)
 FLOOD_SECRET=$(openssl rand -hex 40)
 export DOCKER_UID DOCKER_GID FLOOD_SECRET
+
 exec docker-compose --project-name rtorrent up --detach rtorrent rtorrent-flood
