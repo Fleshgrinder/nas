@@ -8,7 +8,6 @@ services:
     container_name: radio-etiopia
     image: fleshgrinder/nas-radio-etiopia:local
     network_mode: host
-    tmpfs: /tmp
     user: $DOCKER_UID:$DOCKER_GID
     volumes:
       - type: bind
