@@ -7,3 +7,6 @@
 
 # Python
 venv/
+
+# Used in various places.
+logs/
