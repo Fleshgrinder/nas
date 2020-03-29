@@ -2,11 +2,12 @@
 FROM alpine
 ARG GID
 ARG UID
-RUN addgroup -g $GID -S rtorrent \
- && adduser -u $UID -G rtorrent -S rtorrent \
+# TODO I cannot pass build args on my Synology to Docker, no clue why.
+RUN addgroup -g ${GID:-100} -S users \
+ && adduser -u ${UID:-1027} -G users -S rtorrent \
  && mkdir /data \
- && chown rtorrent:rtorrent /data \
+ && chown rtorrent:users /data \
  && apk add --no-cache rtorrent
-USER rtorrent:rtorrent
+USER rtorrent:users
 WORKDIR /data
 CMD ["rtorrent"]
