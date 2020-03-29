@@ -17,7 +17,7 @@ DOCKER_GID=$(id -g Richard)
 export DOCKER_UID DOCKER_GID
 
 # Execute the actual task…
-docker-compose --project-name radio-etiopia run radio-etiopia
+docker-compose --no-ansi --project-name radio-etiopia run radio-etiopia
 
 # Tell AudioStation that the files have changed…
 synoindex -R 'music/R/Rádio Etiópia'
