@@ -34,7 +34,7 @@ services:
     container_name: rtorrent
     image: fleshgrinder/nas-rtorrent:local
     network_mode: host
-    #restart: always
+    restart: always
     user: $DOCKER_UID:$DOCKER_GID
     volumes:
       - type: bind
@@ -90,7 +90,7 @@ services:
       - FLOOD_SECRET
     image: fleshgrinder/nas-rtorrent-flood:local
     network_mode: host
-    #restart: always
+    restart: always
     user: $DOCKER_UID:$DOCKER_GID
     volumes:
       - type: bind
