@@ -65,4 +65,4 @@ method.set_key = event.download.finished, completed, "move_to_completed = (d.dat
 method.set_key = event.download.erased, dir_cleanup, "execute.throw.bg = rmdir, -p, --ignore-fail-on-non-empty, (d.directory)"
 
 # Automatically start if a hash check was successful.
-method.set_key = event.download.hash_done, auto_start, "if = (not, (d.hashing_failed)), (d.try_start)"
+method.set_key = event.download.hash_done, auto_start, "if = (d.complete), (d.try_start)"
