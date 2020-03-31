@@ -7,7 +7,7 @@ RUN (addgroup -g ${GID:-100} -S users || :) \
  && adduser -u ${UID:-1027} -G users -S rtorrent \
  && mkdir /data \
  && chown rtorrent:users /data \
- && apk add --no-cache rtorrent
+ && apk add --no-cache c-ares rtorrent
 USER rtorrent:users
 WORKDIR /data
 CMD ["rtorrent"]

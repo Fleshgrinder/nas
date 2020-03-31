@@ -40,6 +40,9 @@ throttle.min_peers.seed.set          = -1
 trackers.numwant.set                 = 100
 trackers.use_udp.set                 = no
 
+# https://github.com/rakshasa/rtorrent/wiki/Performance-Tuning#session-save
+schedule2 = session_save, 1200, 43200, ((session.save))
+
 # https://rtorrent-docs.readthedocs.io/en/latest/cmd-ref.html#term-d-base-path
 method.insert = d.data_path, private|simple, "if = (d.is_multi_file), (cat, (d.directory), /), (cat, (d.directory), /, (d.name))"
 
