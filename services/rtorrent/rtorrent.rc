@@ -49,11 +49,11 @@ method.insert  = d.auto_tag, private|simple, "d.custom1.set = (d.get_tag)"
 method.set_key = event.download.inserted_new, tag, "if = (equal, (d.custom1), ), (d.auto_tag)"
 
 # Automatically move download to longtime storage.
-method.insert  = d.completed_path,  private|simple, "execute.capture = get-completed-path, (d.name), (d.custom1)"
+method.insert  = d.completed_path,  private|simple, "execute.capture = get-completed-path, (d.is_multi_file), (d.directory), (d.name), (d.custom1)"
 method.insert  = move_to_completed, private|simple, "\
                  d.directory.set     = (argument.1); \
                  execute.throw       = mkdir, -pv, (argument.1); \
-                 execute.throw       = mv, -fv, (argument.0), (argument.1); \
+                 execute.throw       = mv, -fnv, (argument.0), (argument.1); \
                  execute.throw.bg    = move-to-unsorted, (d.custom1), (d.data_path); \
                  d.save_full_session ="
 method.set_key = event.download.finished, completed, "move_to_completed = (d.data_path), (d.completed_path)"

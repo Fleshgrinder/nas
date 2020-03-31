@@ -1,5 +1,9 @@
 #!/bin/sh
 set -eu
-if [ "$1" = music ]; then
-    cp -fprv "$2" /data/unsorted
+
+tag=${1:?missing required (d.custom1) argument #1}
+data_path=${2:?missing required (d.data_path) argument #2}
+
+if [ "$tag" = music ]; then
+    cp -fprv "$data_path" /data/unsorted
 fi
