@@ -15,10 +15,6 @@ services:
     user: $DOCKER_UID:$VIDEO_GID
     volumes:
       - type: bind
-        source: ./services/jellyfin/inotify-max-user-watches.txt
-        target: /proc/sys/fs/inotify/max_user_watches
-        read_only: true
-      - type: bind
         source: ./services/jellyfin
         target: /config
         volume:
