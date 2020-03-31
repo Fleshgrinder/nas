@@ -7,14 +7,9 @@ if ((EUID != 0)); then
 fi
 
 cd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")"
+shopt -s extglob
 rm -fr \
     data/jellyfin/*/ \
-    services/jellyfin/*/
-
-source .env
-(
-    mkdir services/jellyfin/transcodes
-    cd services/jellyfin/transcodes
-    printf '*\n!.gitignore\n' >.gitignore
-    chown -R "$DOCKER_UID:$DOCKER_GID" .
-)
+    services/jellyfin/!(config|transcodes)/ \
+    services/jellyfin/config/!(dlna)/ \
+    services/jellyfin/config/dlna/!(user)/

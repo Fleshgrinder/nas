@@ -7,7 +7,7 @@ services:
     container_name: jellyfin
     devices:
       - /dev/dri/card0:/dev/dri/card0
-      - /dev/dri/controlD64:/dev/dri/controlD64
+      #- /dev/dri/controlD64:/dev/dri/controlD64
       - /dev/dri/renderD128:/dev/dri/renderD128
     image: fleshgrinder/nas-jellyfin:local
     network_mode: host
