@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+script="$(dirname "$(dirname "${BASH_SOURCE[0]}")")/bin/get-completed-path"
+
+expected='/data/completed/series/the simpsons/s01'
+
+names=(
+    'The.Simpsons.S01.1080p...'
+    'The.Simpsons.S01E01.1080p...'
+    'The.Simpsons.Season.01'
+    'The Simpsons S01 1080p'
+    'The Simpsons Season 01'
+)
+
+result() { printf "\e[3$1m$2\e[0m %s == %s\n" "$3" "$expected"; }
+
+for name in "${names[@]}"; do
+    if actual=$("$script" "$name" series) && [[ "$actual" == "$expected" ]]; then
+        result 2 '✓' "$actual"
+    else
+        result 1 '✗' "$actual"
+    fi
+done

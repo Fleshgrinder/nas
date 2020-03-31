@@ -1,5 +1,5 @@
 #!/bin/sh
 set -eu
 if [ "$1" = music ]; then
-    cp -fprv "$2/$3" /data/unsorted
+    cp -fprv "$2" /data/unsorted
 fi

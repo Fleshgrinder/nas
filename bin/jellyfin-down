@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+if ((EUID != 0)); then
+    echo 'Super-user privileges are required to run Docker on Synology.' >&2
+    exit 1
+fi
+
+exec docker-compose --project-name jellyfin down

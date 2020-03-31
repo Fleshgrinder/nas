@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+if ((EUID != 0)); then
+    echo 'This script is dangerous and requires super-user privileges!' >&2
+    exit 1
+fi
+
+cd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")"
+rm -fr \
+    data/jellyfin/*/ \
+    services/jellyfin/*/
+
+source .env
+(
+    mkdir services/jellyfin/transcodes
+    cd services/jellyfin/transcodes
+    printf '*\n!.gitignore\n' >.gitignore
+    chown -R "$DOCKER_UID:$DOCKER_GID" .
+)

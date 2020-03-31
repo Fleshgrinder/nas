@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+printf /data/completed/%s "$2"
+if [ "$2" = series ]; then
+    printf %s "$1" | tr '[:upper:]' '[:lower:]' | sed -re 's/\./ /g' -e 's/^(.*) s(eason )?([0-9]+)(e[0-9]+)?( .*|$)/\/\1\/s\3/'
+fi

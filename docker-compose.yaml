@@ -1,6 +1,35 @@
 version: '3.7'
 
 services:
+  # https://github.com/jellyfin/jellyfin
+  jellyfin:
+    build:
+      context: https://github.com/jellyfin/jellyfin.git
+    container_name: jellyfin
+    devices:
+      - /dev/dri/card0:/dev/dri/card0
+      - /dev/dri/renderD128:/dev/dri/renderD128
+    image: fleshgrinder/nas-jellyfin:local
+    network_mode: host
+    restart: unless-stopped
+    user: $DOCKER_UID:$VIDEO_GID
+    volumes:
+      - type: bind
+        source: ./services/jellyfin
+        target: /config
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./data/jellyfin
+        target: /cache
+        volume:
+          nocopy: true
+      - type: bind
+        source: /media/fleshgrinder/Patriot #./video
+        target: /media
+        volume:
+          nocopy: true
+
   # tasks/radio-etiopia/task.py
   radio-etiopia:
     build:
@@ -34,7 +63,7 @@ services:
     container_name: rtorrent
     image: fleshgrinder/nas-rtorrent:local
     network_mode: host
-    restart: always
+    restart: unless-stopped
     user: $DOCKER_UID:$DOCKER_GID
     volumes:
       - type: bind
@@ -90,7 +119,7 @@ services:
       - FLOOD_SECRET
     image: fleshgrinder/nas-rtorrent-flood:local
     network_mode: host
-    restart: always
+    restart: unless-stopped
     user: $DOCKER_UID:$DOCKER_GID
     volumes:
       - type: bind
@@ -105,6 +134,7 @@ services:
       - type: bind
         source: ./data/rtorrent/run
         target: /usr/src/app/config/rtorrent
+        read_only: true
         volume:
           nocopy: true
       - type: bind
