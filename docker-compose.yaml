@@ -3,8 +3,7 @@ version: '3.7'
 services:
   # https://github.com/jellyfin/jellyfin
   jellyfin:
-    build:
-      context: https://github.com/jellyfin/jellyfin.git
+    build: https://github.com/jellyfin/jellyfin.git
     container_name: jellyfin
     devices:
       - /dev/dri/card0:/dev/dri/card0
@@ -126,8 +125,7 @@ services:
 
   # https://github.com/Flood-UI/flood
   rtorrent-flood:
-    build:
-      context: https://github.com/Flood-UI/flood.git
+    build: https://github.com/Flood-UI/flood.git
     container_name: rtorrent-flood
     environment:
       - FLOOD_SECRET
