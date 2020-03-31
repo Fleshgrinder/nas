@@ -26,8 +26,21 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: /media/fleshgrinder/Patriot #./video
-        target: /media
+        source: ./video/movies
+        target: /media/movies
+        read_only: true
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./music
+        target: /media/music
+        read_only: true
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./video/series
+        target: /media/series
+        read_only: true
         volume:
           nocopy: true
 
