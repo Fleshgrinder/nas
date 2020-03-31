@@ -2,3 +2,4 @@
 !/config/
 !/transcodes/
 !/.gitignore
+!/inotify-max-user-watches.txt
