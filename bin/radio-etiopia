@@ -26,4 +26,8 @@ name=radio-etiopia
 docker-compose --no-ansi --project-name $name run --name $name --rm $name
 
 # Tell AudioStation that the files have changed…
-synoindex -R 'music/R/Rádio Etiópia'
+synoindex -R music/R/Rádio\ Etiópia
+
+# Force Synology Drive to recognize new files.
+shopt -s globstar
+touch music/R/Rádio\ Etiópia/**/*
