@@ -30,4 +30,4 @@ synoindex -R music/R/Rádio\ Etiópia
 
 # Force Synology Drive to recognize new files.
 shopt -s globstar
-touch music/R/Rádio\ Etiópia/**/*
+touch music/R/Rádio\ Etiópia/$(date +%Y)/**/*
