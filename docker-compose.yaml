@@ -169,3 +169,12 @@ services:
         target: /data/completed/series
         volume:
           nocopy: true
+
+  # https://developers.cloudflare.com/1.1.1.1/dns-over-https/cloudflared-proxy
+  cloudflared:
+    container_name: cloudflared
+    image: cloudflare/cloudflared
+    network_mode: host
+    restart: unless-stopped
+    entrypoint: cloudflared
+    command: proxy-dns --port 5553
