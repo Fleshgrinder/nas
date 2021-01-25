@@ -5,5 +5,6 @@ services:
     image: cloudflare/cloudflared
     network_mode: host
     restart: unless-stopped
-    entrypoint: cloudflared
-    command: proxy-dns --address 0.0.0.0 --port 53
+    command: proxy-dns --address 0.0.0.0 --port 5553
+    user: nobody
+    working_dir: /tmp
