@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  cloudflared:
+    container_name: cloudflared
+    image: cloudflare/cloudflared
+    network_mode: host
+    restart: unless-stopped
+    entrypoint: cloudflared
+    command: proxy-dns --address 0.0.0.0 --port 53
