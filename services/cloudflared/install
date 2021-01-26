@@ -18,7 +18,13 @@ readonly interface=${1:-bond0}
 main() {
     iptables -A INPUT -p udp --dport 53 -j ACCEPT
     iptables -A INPUT -p udp --dport 5553 -j ACCEPT
+
+    # This is for incoming requests from other computers.
     iptables -A PREROUTING -t nat -i "$interface" -p udp --dport 53 -j REDIRECT --to-port 5553
+
+    # This is for local requests from the current computer so that we can use
+    # our DoH server for the NAS itself as well.
+    iptables -A OUTPUT -t nat -p udp --dport 53 -j REDIRECT --to-port 5553
 }
 
 if ! main; then
