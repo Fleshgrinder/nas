@@ -1,48 +1,5 @@
 version: '3.7'
-
 services:
-  # https://github.com/jellyfin/jellyfin
-  jellyfin:
-    build: https://github.com/jellyfin/jellyfin.git
-    container_name: jellyfin
-    devices:
-      - /dev/dri/card0:/dev/dri/card0
-      #- /dev/dri/controlD64:/dev/dri/controlD64
-      - /dev/dri/renderD128:/dev/dri/renderD128
-    image: fleshgrinder/nas-jellyfin:local
-    network_mode: host
-    restart: unless-stopped
-    user: $DOCKER_UID:$VIDEO_GID
-    volumes:
-      - type: bind
-        source: ./services/jellyfin
-        target: /config
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./data/jellyfin
-        target: /cache
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./video/movies
-        target: /media/movies
-        read_only: true
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./music
-        target: /media/music
-        read_only: true
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./video/series
-        target: /media/series
-        read_only: true
-        volume:
-          nocopy: true
-
   # tasks/radio-etiopia/task.py
   radio-etiopia:
     build:
