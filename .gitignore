@@ -2,8 +2,8 @@
 @*/
 
 # JetBrains
-.idea/
-*.iml
+/.idea/*
+!/.idea/icon.svg
 
 # Python
 venv/
