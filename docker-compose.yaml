@@ -1,28 +1,5 @@
 version: '3.7'
 services:
-  # tasks/radio-etiopia/task.py
-  radio-etiopia:
-    build:
-      context: tasks/radio-etiopia
-    container_name: radio-etiopia
-    image: fleshgrinder/nas-radio-etiopia:local
-    network_mode: host
-    user: $DOCKER_UID:$DOCKER_GID
-    volumes:
-      - type: bind
-        source: ./tasks/radio-etiopia
-        target: /usr/local/src
-        read_only: true
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./music/R/Rádio Etiópia
-        target: /out
-        volume:
-          nocopy: true
-      - type: tmpfs
-        target: /tmp
-
   # https://github.com/rakshasa/rtorrent
   rtorrent:
     build:
