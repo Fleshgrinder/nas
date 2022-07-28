@@ -1,12 +1,2 @@
-# Ignore all Synology specific directories.
-@*/
-
-# JetBrains
 /.idea/*
-!/.idea/icon.svg
-
-# Python
-venv/
-
-# Used in various places.
-logs/
+!/.idea/icon*.svg

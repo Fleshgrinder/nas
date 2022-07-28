@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -e
+chown -R Fleshgrinder:users .
+# https://stackoverflow.com/questions/18817744
+chmod -R a=r,u+w,a+X .

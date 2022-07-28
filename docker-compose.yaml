@@ -1,105 +1,35 @@
 version: '3.7'
 services:
-  # https://github.com/rakshasa/rtorrent
+  # https://github.com/jesec/rtorrent
+  # https://github.com/jesec/flood
   rtorrent:
-    build:
-      context: services/rtorrent
-      args:
-        GID: $DOCKER_GID
-        UID: $DOCKER_UID
-    container_name: rtorrent
-    image: fleshgrinder/nas-rtorrent:local
+    image: jesec/rtorrent-flood:latest
+    container_name: jesec-rtorrent-flood
     network_mode: host
     restart: unless-stopped
-    user: $DOCKER_UID:$DOCKER_GID
-    volumes:
-      - type: bind
-        source: ./services/rtorrent/rtorrent.rc
-        target: /home/rtorrent/.rtorrent.rc
-        read_only: true
-      - type: bind
-        source: ./services/rtorrent/bin
-        target: /usr/local/bin
-        read_only: true
-      - type: bind
-        source: ./data/rtorrent/run
-        target: /home/rtorrent/run
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./data/rtorrent/session
-        target: /home/rtorrent/session
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./music/.unsorted
-        target: /data/unsorted
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./data/rtorrent/incoming
-        target: /data/incoming
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./downloads
-        target: /data/completed
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./video/movies
-        target: /data/completed/movies
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./video/series
-        target: /data/completed/series
-        volume:
-          nocopy: true
-
-  # https://github.com/Flood-UI/flood
-  rtorrent-flood:
-    build: https://github.com/Flood-UI/flood.git
-    container_name: rtorrent-flood
+    user: ${UID:-1026}:${GID:-100}
     environment:
-      - FLOOD_SECRET
-    image: fleshgrinder/nas-rtorrent-flood:local
-    network_mode: host
-    restart: unless-stopped
-    user: $DOCKER_UID:$DOCKER_GID
+      HOME: /config
+    command:
+      - --auth=none
+      - --host=${HOST:-0.0.0.0}
+      - --port=${PORT:-3001}
+      - --allowedpath=/data/
+      - --rundir=/config/flood
+      - --rtsocket=/config/rtorrent/rpc.sock
     volumes:
       - type: bind
-        source: ./services/rtorrent-flood/config.js
-        target: /usr/src/app/config.js
-        read_only: true
+        source: ./config
+        target: /config
       - type: bind
-        source: ./data/rtorrent-flood
-        target: /usr/src/app/config/server
-        volume:
-          nocopy: true
+        source: /volume1/downloads/apps
+        target: /data/apps
       - type: bind
-        source: ./data/rtorrent/run
-        target: /usr/src/app/config/rtorrent
-        read_only: true
-        volume:
-          nocopy: true
+        source: /volume1/video/movies
+        target: /data/movies
       - type: bind
-        source: ./data/rtorrent/incoming
-        target: /data/incoming
-        volume:
-          nocopy: true
+        source: /volume1/downloads/music
+        target: /data/music
       - type: bind
-        source: ./downloads
-        target: /data/completed
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./video/movies
-        target: /data/completed/movies
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./video/series
-        target: /data/completed/series
-        volume:
-          nocopy: true
+        source: /volume1/video/series
+        target: /data/series
